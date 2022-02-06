@@ -1,0 +1,43 @@
+version: '3.9'
+networks:
+  crud-net:
+    name: crud-net
+services:
+  crud-db:
+    container_name: crud-db
+    image: mysql:8
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - 3306:3306
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=crud
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=user
+    working_dir: /var/lib/mysql
+    volumes:
+      # - ./apps/mysql:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d
+    networks:
+      - crud-net
+  crud-api:
+    container_name: crud-api
+    image: crud/api
+    build: ./server
+    ports:
+      - "3001:3001"
+    networks:
+      - crud-net
+    depends_on:
+      - crud-db
+  crud-web:
+    container_name: crud-web
+    image: crud/web
+    build: ./client
+    ports:
+      - "3000:3000"
+    networks:
+      - crud-net
+    depends_on:
+      - crud-db
