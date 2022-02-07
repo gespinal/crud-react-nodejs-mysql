@@ -6,10 +6,10 @@ services:
   crud-db:
     container_name: crud-db
     image: mysql:8
+    restart: unless-stopped
     command: --default-authentication-plugin=mysql_native_password
     ports:
       - 3306:3306
-    restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=crud
@@ -24,6 +24,7 @@ services:
   crud-api:
     container_name: crud-api
     image: crud/api
+    restart: unless-stopped
     build: ./server
     ports:
       - "3001:3001"
@@ -34,6 +35,7 @@ services:
   crud-web:
     container_name: crud-web
     image: crud/web
+    restart: unless-stopped
     build: ./client
     ports:
       - "3000:3000"
@@ -41,3 +43,15 @@ services:
       - crud-net
     depends_on:
       - crud-db
+
+  adminer:
+    container_name: adminer
+    image: adminer:latest
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      ADMINER_DEFAULT_DB_DRIVER: mysql
+      ADMINER_DEFAULT_SERVER: mysql
+    networks:
+    - crud-net
