@@ -1,20 +1,25 @@
 name: CI
 on:
+  workflow_dispatch:
+    inputs:
+      run:
+        options: ['runner1', 'runner2']
+        default: 'runner1'
   push:
     branches: [ master ]
   pull_request:
     branches: [ master ]
 jobs:
   build:
-    runs-on: [self-hosted, runner1]
+    runs-on: [self-hosted, "${{ github.event.inputs.run }}" ]
     steps:
     - uses: actions/checkout@v2
     - name: Nada
       run: echo Hello!!!
       
-  build2:
-    runs-on: [self-hosted, runner2]
-    steps:
-    - uses: actions/checkout@v2
-    - name: Nada
-      run: echo Hello!!!
+#   build2:
+#     runs-on: [self-hosted, runner2]
+#     steps:
+#     - uses: actions/checkout@v2
+#     - name: Nada
+#       run: echo Hello!!!
