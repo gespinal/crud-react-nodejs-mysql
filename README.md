@@ -18,10 +18,14 @@ Rebuild specific containers...
 
 `docker-compose up {container_name}`
 
-To persist DB data uncomment the following line: 
+To persist DB data uncomment the following line:
 
 ` - ./apps/mysql:/var/lib/mysql`
 
 Access the application on:
 
 `http://localhost:3000`
+
+In the case you need to force/build/recreate:
+
+`docker-compose up --force-recreate --build`
