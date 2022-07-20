@@ -2,18 +2,21 @@ const express = require("express");
 const bodyParser = require('body-parser');
 const cors = require("cors");
 const mysql = require ("mysql");
+require('dotenv').config();
+
+console.log(`WEB_SERVER: ${process.env.WEB_HOST}`);
 
 const app = express();
 
 const db = mysql.createConnection ({
-   host: "crud-db",
+   host: process.env.DB_HOST,
    user: "user",
    password: "user",
    database: "crud"
 });
 
 var corsOptions = {
-  origin: "http://localhost:3000"
+  origin: process.env.WEB_HOST
 };
 
 app.use(cors(corsOptions));

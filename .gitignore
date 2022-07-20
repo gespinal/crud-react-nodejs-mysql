@@ -1,2 +1,4 @@
 .git
 apps
+api/node_modules
+web/node_modules

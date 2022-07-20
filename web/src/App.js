@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import './App.css';
-import Axios from 'axios'; 
+import Axios from 'axios';
+
+console.log(process.env.REACT_APP_API_URL);
 
 function App() {
 
@@ -9,20 +11,20 @@ function App() {
   const [itemList, setItemList] = useState([]);
 
   useEffect(()=> {
-    Axios.get("http://localhost:3001/api/get").then((response) => {
+    Axios.get(process.env.REACT_APP_API_URL+"/api/get").then((response) => {
       setItemList(response.data);
       console.log(response.data);
     });
   }, []);
 
   const getItems = () => {
-    Axios.get("http://localhost:3001/api/get").then((response) => {
+    Axios.get(process.env.REACT_APP_API_URL+"/api/get").then((response) => {
       setItemList(response.data);
     });
   };
 
   const createItem = () => {
-    Axios.post("http://localhost:3001/api/insert", {
+    Axios.post(process.env.REACT_APP_API_URL+"/api/insert", {
       item: item,
     }).then((response) => {
       setItemList([
@@ -36,7 +38,7 @@ function App() {
   };
 
   const updateItem = (id) => {
-    Axios.put("http://localhost:3001/api/update", {
+    Axios.put(process.env.REACT_APP_API_URL+"/api/update", {
       id: id,
       itemU: itemU,
       }).then((response) => {
@@ -55,7 +57,7 @@ function App() {
   }
 
   const deleteItem = (id) => {
-    Axios.delete(`http://localhost:3001/api/delete/${id}`).then((response) => {
+    Axios.delete(`${process.env.REACT_APP_API_URL}/api/delete/${id}`).then((response) => {
       setItemList(
         itemList.filter((val) => {
           return val.id != id;
@@ -87,7 +89,7 @@ function App() {
             <button class="button-upd" onClick={() => {updateItem(val.id)}}>Update</button>
             <button class="button-del" onClick={() => {deleteItem(val.id)}}>Delete</button>
             </div>
-          ) 
+          )
         })}
       </div>
     </div>
